@@ -7,12 +7,11 @@ from telebot.types import Message, CallbackQuery
 from telebot import types
 
 from entities import Config
-from functions import Runner, stop, send_to_telegram
+from functions import stop, send_to_telegram, run_parser, clear_bd
 
 
 a = Config()
 admins = a.admins
-r = Runner()
 bot_token = "6922074672:AAFQV43J_1YPp08FLj67P4FmWlkqMFky-kM"
 bot = telebot.TeleBot(token=bot_token, parse_mode="html")
 
@@ -33,7 +32,7 @@ def send_welcome(message: Message):
 	if message.from_user.id in admins:
 		bot.send_message(message.chat.id, f"Бот начал свою работу")
 		logging.info(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} -- Поступила команда на старт парсинга")
-		r.run()
+		run_parser()
 
 
 @bot.message_handler(commands=['stop'])
@@ -53,7 +52,7 @@ def restart_script(message: Message):
 		sleep(3)
 		bot.send_message(message.chat.id, f"Бот начал свою работу")
 		logging.info(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} -- Поступила команда на старт парсинга")
-		r.run()
+		run_parser()
 
 
 
@@ -73,7 +72,7 @@ def clear_bd(message: Message):
 	if message.from_user.id in admins:
 		bot.send_message(message.chat.id, f"База данных очищена")
 		logging.info(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} -- Поступила команда полной очистки базы данных")
-		r.clear_bd()
+		clear_bd()
 		
 
 
